@@ -7,6 +7,8 @@ import { Keypair } from "@solana/web3.js";
 // m / purpose' / coin_type' / account' / change / address_index
 // Link : https://projects.100xdevs.com/tracks/public-private-keys/Public-Key-Cryptography-9#36eb900d15f0439a855ffd0e9fe73772
 
+// coin_type: 60 -> ETH, 0 -> BIT, 501 -> SOL
+
 // Generate a mnemonic phrase
 const mnemonic = generateMnemonic(256);
 
@@ -15,7 +17,7 @@ const seed = mnemonicToSeedSync(mnemonic);
 
 for (let i = 0; i < 4; i++) {
   // Define the derivation path
-  const path = `m/44'/${i}'/0'`;
+  const path = `m/44'/60'/${i}'`;
   
   // Derive the key from the seed using the derivation path
   const derivedPath = derivePath(path, seed.toString('hex')).key;

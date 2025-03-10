@@ -1,10 +1,13 @@
 import { useState } from 'react'
-import { useWallet, useConnection } from '@solana/wallet-adapter-react'
+// import { useWallet, useConnection } from '@solana/wallet-adapter-react'
 import { LAMPORTS_PER_SOL } from '@solana/web3.js'
 
-const AirdropSol = () => {
-  const { connection } = useConnection()
-  const { publicKey } = useWallet()
+const AirdropSol = ({
+  connection,
+  publicKey
+}: any) => {
+  // const { connection } = useConnection()
+  // const { publicKey } = useWallet()
   const [amount, setAmount] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error' | null; text: string }>({

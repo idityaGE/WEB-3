@@ -6,6 +6,8 @@ import {
 import { useWallet, useConnection } from '@solana/wallet-adapter-react'
 import { LAMPORTS_PER_SOL } from '@solana/web3.js'
 import AirdropSol from './components/airdrop-sol'
+import { WalletNotConnectedError } from '@solana/wallet-adapter-base'
+import { SendSOL } from './components/sendSol'
 
 function App() {
   const { connection } = useConnection()
@@ -15,7 +17,7 @@ function App() {
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null)
 
   const getBalance = useCallback(async () => {
-    if (!publicKey) return
+    if (!publicKey) return new WalletNotConnectedError()
 
     try {
       setIsLoading(true)
@@ -99,7 +101,7 @@ function App() {
                         }}
                         className="text-indigo-400 hover:text-indigo-300 p-1"
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
                         </svg>
                       </button>
@@ -135,7 +137,11 @@ function App() {
         </main>
 
         <div className='pt-3'>
-          <AirdropSol />
+          <SendSOL />
+        </div>
+
+        <div className='pt-3'>
+          <AirdropSol connection={connection} publicKey={publicKey} />
         </div>
 
       </div>

@@ -12,21 +12,29 @@ import {
   AuthorityType,
   createSetAuthorityInstruction
 } from "@solana/spl-token";
+
 import {
   createInitializeInstruction,
   createUpdateFieldInstruction,
   pack,
   TokenMetadata,
 } from "@solana/spl-token-metadata";
+
 import {
   Keypair,
   SystemProgram,
   Transaction,
-  Connection,
-  PublicKey,
+  type Connection,
+  type PublicKey,
 } from "@solana/web3.js";
-import { WalletNotConnectedError, type WalletAdapterProps, } from "@solana/wallet-adapter-base";
+
+import {
+  WalletNotConnectedError,
+  type WalletAdapterProps
+} from "@solana/wallet-adapter-base";
+
 import { type FormSchema } from "@/components/TokenLauchpadForm";
+import getMetaData from "./getMetaData";
 
 /**
  * Creates a new token on the Solana blockchain
@@ -56,7 +64,7 @@ const createToken = async (
     name: values.TokenName,
     symbol: values.Symbol,
     uri: values.ImageUrl,
-    additionalMetadata: [["description", values.Description]]
+    additionalMetadata: values.Description ? [["description", values.Description]] : []
   };
 
   // Size of MetadataExtension 2 bytes for type, 2 bytes for length
@@ -93,6 +101,14 @@ const createToken = async (
       programId: TOKEN_2022_PROGRAM_ID // Program assigned as owner of created account
     }),
 
+    // Instruction to initialize the MetadataPointer Extension
+    createInitializeMetadataPointerInstruction(
+      mint, // Mint Account address
+      publicKey, // Authority that can set the metadata address
+      mint, // Account address that holds the metadata
+      TOKEN_2022_PROGRAM_ID,
+    ),
+
     // Instruction to initialize the Mint
     createInitializeMintInstruction(
       mint, // Mint Account address
@@ -100,14 +116,6 @@ const createToken = async (
       publicKey, // Mint authority
       publicKey, // Freeze authority (if null, then freeze authority is not set)
       TOKEN_2022_PROGRAM_ID // Program ID
-    ),
-
-    // Instruction to initialize the MetadataPointer Extension
-    createInitializeMetadataPointerInstruction(
-      mint, // Mint Account address
-      publicKey, // Authority that can set the metadata address
-      mint, // Account address that holds the metadata
-      TOKEN_2022_PROGRAM_ID,
     ),
 
     // Instruction to initialize Metadata Account data
@@ -131,8 +139,8 @@ const createToken = async (
         programId: TOKEN_2022_PROGRAM_ID, // Token Extension Program as Metadata Program
         metadata: mint, // Account address that holds the metadata
         updateAuthority: publicKey, // Authority that can update the metadata
-        field: "description", // key
-        value: values.Description, // value
+        field: metaData.additionalMetadata[0][0], // key
+        value: metaData.additionalMetadata[0][1], // value
       })
     );
   }
@@ -192,13 +200,13 @@ const createToken = async (
   transaction.partialSign(mintAccountKeypair);
 
   // Send transaction to blockchain
-  const signature = await sendTransaction(transaction, connection, {
-    skipPreflight: false,
-    preflightCommitment: 'confirmed'
-  });
+  const signature = await sendTransaction(transaction, connection);
 
   // Wait for confirmation
   await connection.confirmTransaction(signature, 'confirmed');
+
+  // getMetaData
+  await getMetaData(mint, connection);
 
   // Return the mint account address for reference
   return mintAccountKeypair.publicKey.toBase58();

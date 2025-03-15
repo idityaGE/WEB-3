@@ -1,133 +1,207 @@
 import {
-  createInitializeMint2Instruction,
-  getMinimumBalanceForRentExemptMint,
-  MINT_SIZE,
-  TOKEN_PROGRAM_ID,
+  ExtensionType,
+  TOKEN_2022_PROGRAM_ID,
+  createInitializeMintInstruction,
+  getMintLen,
+  createInitializeMetadataPointerInstruction,
+  TYPE_SIZE,
+  LENGTH_SIZE,
   getAssociatedTokenAddress,
   createAssociatedTokenAccountInstruction,
   createMintToInstruction,
-  createSetAuthorityInstruction,
-  AuthorityType
-} from "@solana/spl-token"
+  AuthorityType,
+  createSetAuthorityInstruction
+} from "@solana/spl-token";
+import {
+  createInitializeInstruction,
+  createUpdateFieldInstruction,
+  pack,
+  TokenMetadata,
+} from "@solana/spl-token-metadata";
 import {
   Keypair,
-  type PublicKey,
   SystemProgram,
   Transaction,
-  type Connection
-} from "@solana/web3.js"
-import {
-  WalletNotConnectedError,
-  type WalletAdapterProps
-} from "@solana/wallet-adapter-base"
-import { type FormSchema } from "@/components/TokenLauchpadForm"
+  Connection,
+  PublicKey,
+} from "@solana/web3.js";
+import { WalletNotConnectedError, type WalletAdapterProps, } from "@solana/wallet-adapter-base";
+import { type FormSchema } from "@/components/TokenLauchpadForm";
 
+/**
+ * Creates a new token on the Solana blockchain
+ * 
+ * @param connection - The Solana connection object
+ * @param publicKey - The public key of the wallet creating the token
+ * @param values - The form values for creating the token
+ * @param sendTransaction - The function to send the transaction
+ * @returns The base58 encoded public key of the created mint account
+ */
 const createToken = async (
   connection: Connection,
   publicKey: PublicKey,
   values: FormSchema,
   sendTransaction: WalletAdapterProps['sendTransaction']
-) => {
-  if (!publicKey) throw new WalletNotConnectedError()
+): Promise<string> => {
+  if (!publicKey) throw new WalletNotConnectedError();
 
   // Generate a new keypair for token mint account
-  const mintAccountKeypair = Keypair.generate()
-  const lamports = await getMinimumBalanceForRentExemptMint(connection)
+  const mintAccountKeypair = Keypair.generate();
+  const mint = mintAccountKeypair.publicKey;
+
+  // Metadata to store in Mint Account
+  const metaData: TokenMetadata = {
+    updateAuthority: publicKey, // Authority that can update the metadata pointer and token metadata
+    mint: mint,
+    name: values.TokenName,
+    symbol: values.Symbol,
+    uri: values.ImageUrl,
+    additionalMetadata: [["description", values.Description]]
+  };
+
+  // Size of MetadataExtension 2 bytes for type, 2 bytes for length
+  const metadataExtension = TYPE_SIZE + LENGTH_SIZE;
+  // Size of metadata
+  const metadataLen = pack(metaData).length;
+
+  // Size of Mint Account with extension
+  const mintLen = getMintLen([ExtensionType.MetadataPointer]);
+
+  // Minimum lamports required for Mint Account
+  const lamports = await connection.getMinimumBalanceForRentExemption(
+    mintLen + metadataExtension + metadataLen,
+  );
 
   // Get the associated token address for the user wallet
   const associatedTokenAddress = await getAssociatedTokenAddress(
-    mintAccountKeypair.publicKey,
-    publicKey
-  )
+    mint,
+    publicKey,
+    false,
+    TOKEN_2022_PROGRAM_ID
+  );
 
   // Create a transaction with multiple instructions
-  const transaction = new Transaction()
+  const transaction = new Transaction();
 
   // 1. Create mint account
   transaction.add(
     SystemProgram.createAccount({
-      fromPubkey: publicKey,
-      newAccountPubkey: mintAccountKeypair.publicKey,
-      space: MINT_SIZE,
-      lamports,
-      programId: TOKEN_PROGRAM_ID
+      fromPubkey: publicKey, // Account that will transfer lamports to created account
+      newAccountPubkey: mint, // Address of the account to create
+      space: mintLen, // Amount of bytes to allocate to the created account
+      lamports, // Amount of lamports transferred to created account
+      programId: TOKEN_2022_PROGRAM_ID // Program assigned as owner of created account
     }),
 
-    // 2. Initialize mint account
-    // We always initialize with the user as both mint and freeze authority
-    // If requested to revoke these authorities, we'll do it in additional instructions
-    createInitializeMint2Instruction(
-      mintAccountKeypair.publicKey,
-      values.Decimal,
-      publicKey,
-      publicKey, // Always start with freeze authority set
-      TOKEN_PROGRAM_ID
+    // Instruction to initialize the Mint
+    createInitializeMintInstruction(
+      mint, // Mint Account address
+      values.Decimal, // Decimals
+      publicKey, // Mint authority
+      publicKey, // Freeze authority (if null, then freeze authority is not set)
+      TOKEN_2022_PROGRAM_ID // Program ID
     ),
 
-    // 3. Create associated token account for user wallet
+    // Instruction to initialize the MetadataPointer Extension
+    createInitializeMetadataPointerInstruction(
+      mint, // Mint Account address
+      publicKey, // Authority that can set the metadata address
+      mint, // Account address that holds the metadata
+      TOKEN_2022_PROGRAM_ID,
+    ),
+
+    // Instruction to initialize Metadata Account data
+    createInitializeInstruction({
+      programId: TOKEN_2022_PROGRAM_ID, // Token Extension Program as Metadata Program
+      metadata: mint, // Account address that holds the metadata
+      updateAuthority: publicKey, // Authority that can update the metadata
+      mint: mint, // Mint Account address
+      mintAuthority: publicKey, // Designated Mint Authority
+      name: metaData.name,
+      symbol: metaData.symbol,
+      uri: metaData.uri,
+    })
+  );
+
+  // Add description if provided
+  if (values.Description) {
+    transaction.add(
+      // Instruction to update metadata, adding custom field
+      createUpdateFieldInstruction({
+        programId: TOKEN_2022_PROGRAM_ID, // Token Extension Program as Metadata Program
+        metadata: mint, // Account address that holds the metadata
+        updateAuthority: publicKey, // Authority that can update the metadata
+        field: "description", // key
+        value: values.Description, // value
+      })
+    );
+  }
+
+  // 3. Create associated token account for user wallet
+  transaction.add(
     createAssociatedTokenAccountInstruction(
       publicKey, // payer
       associatedTokenAddress, // associated token account address
       publicKey, // owner
-      mintAccountKeypair.publicKey, // mint
-      TOKEN_PROGRAM_ID
+      mint, // mint
+      TOKEN_2022_PROGRAM_ID
     ),
 
     // 4. Mint tokens to user's associated token account
     createMintToInstruction(
-      mintAccountKeypair.publicKey, // mint
+      mint, // mint
       associatedTokenAddress, // destination
       publicKey, // authority
-      values.InitialSupply * (10 ** values.Decimal), // amount adjusted for decimals
+      BigInt(values.InitialSupply) * BigInt(10 ** values.Decimal), // amount adjusted for decimals
       [],
-      TOKEN_PROGRAM_ID
+      TOKEN_2022_PROGRAM_ID
     )
-  )
+  );
 
   // 5. If RevokeMint is true, add instruction to revoke mint authority
   if (values.RevokeMint) {
     transaction.add(
       createSetAuthorityInstruction(
-        mintAccountKeypair.publicKey, // mint account
+        mint, // mint account
         publicKey, // current authority
         AuthorityType.MintTokens, // authority type
         null, // new authority (null means revoking)
         [],
-        TOKEN_PROGRAM_ID
+        TOKEN_2022_PROGRAM_ID
       )
-    )
+    );
   }
 
   // 6. If RevokeFreeze is true, add instruction to revoke freeze authority
   if (values.RevokeFreeze) {
     transaction.add(
       createSetAuthorityInstruction(
-        mintAccountKeypair.publicKey, // mint account
+        mint, // mint account
         publicKey, // current authority
         AuthorityType.FreezeAccount, // authority type
         null, // new authority (null means revoking)
         [],
-        TOKEN_PROGRAM_ID
+        TOKEN_2022_PROGRAM_ID
       )
-    )
+    );
   }
 
   // Set transaction metadata and sign with the mint keypair
-  transaction.feePayer = publicKey
-  transaction.recentBlockhash = (await connection.getLatestBlockhash()).blockhash
-  transaction.partialSign(mintAccountKeypair)
+  transaction.feePayer = publicKey;
+  transaction.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+  transaction.partialSign(mintAccountKeypair);
 
   // Send transaction to blockchain
   const signature = await sendTransaction(transaction, connection, {
     skipPreflight: false,
     preflightCommitment: 'confirmed'
-  })
+  });
 
   // Wait for confirmation
-  await connection.confirmTransaction(signature, 'confirmed')
+  await connection.confirmTransaction(signature, 'confirmed');
 
   // Return the mint account address for reference
-  return mintAccountKeypair.publicKey.toBase58()
-}
+  return mintAccountKeypair.publicKey.toBase58();
+};
 
-export default createToken
+export default createToken;

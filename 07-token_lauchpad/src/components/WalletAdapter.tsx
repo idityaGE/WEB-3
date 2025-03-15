@@ -2,6 +2,7 @@ import {
   WalletDisconnectButton,
   WalletMultiButton
 } from '@solana/wallet-adapter-react-ui'
+import { ModeToggle } from './mode-toggle'
 
 const WalletAdapter = () => {
 
@@ -9,6 +10,7 @@ const WalletAdapter = () => {
     <div className="w-full h-26 flex items-center justify-evenly">
       <WalletMultiButton />
       <WalletDisconnectButton />
+      <ModeToggle />
     </div>
   )
 }

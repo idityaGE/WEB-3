@@ -7,7 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 
 createRoot(document.getElementById('root')!).render(
   <WalletAdapterProvider>
-    <ThemeProvider>
+    <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
       <App />
     </ThemeProvider>
   </WalletAdapterProvider>

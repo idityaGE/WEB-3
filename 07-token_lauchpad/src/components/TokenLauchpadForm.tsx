@@ -38,11 +38,14 @@ const formSchema = z.object({
   }),
   RevokeMint: z.boolean(),
   RevokeFreeze: z.boolean(),
-  Description: z.string().min(8, {
-    message: "Description must be at least 8 characters."
-  }).max(50, {
-    message: "Description cannot exceed 50 characters."
-  })
+  Description: z.union([
+    z.string().min(8, {
+      message: "Description must be at least 8 characters."
+    }).max(50, {
+      message: "Description cannot exceed 50 characters."
+    }),
+    z.string().max(0)
+  ]).optional()
 })
 
 export type FormSchema = z.infer<typeof formSchema>
@@ -182,7 +185,7 @@ const TokenLaunchpadForm = () => {
                     <FormItem>
                       <FormLabel className="font-medium flex items-center gap-2">
                         <FileText className="h-4 w-4" />
-                        Description
+                        Description <span className="text-muted-foreground text-xs">(optional)</span>
                       </FormLabel>
                       <FormControl>
                         <Textarea
@@ -193,7 +196,7 @@ const TokenLaunchpadForm = () => {
                       </FormControl>
                       <FormDescription className="flex items-center gap-1.5">
                         <Info className="h-3.5 w-3.5" />
-                        <span>{field.value.length}/50 characters</span>
+                        <span>{(field.value ?? "").length}/50 characters</span>
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

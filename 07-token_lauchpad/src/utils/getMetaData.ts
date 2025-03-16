@@ -12,7 +12,6 @@ const getMetaData = async (mint: PublicKey, connection: Connection) => {
 
   // Retrieve and log the metadata pointer state
   const metadataPointer = getMetadataPointerState(mintInfo);
-  console.log("\nMetadata Pointer:", JSON.stringify(metadataPointer, null, 2));
 
 
   // Retrieve and log the metadata state
@@ -20,7 +19,20 @@ const getMetaData = async (mint: PublicKey, connection: Connection) => {
     connection,
     mint, // Mint Account address
   );
-  console.log("\nMetadata:", JSON.stringify(metadata, null, 2));
+
+  // const AssociateTokenAddress = await getAssociatedTokenAddress(
+  //   mint,
+  //   publicKey,
+  //   false,
+  //   TOKEN_2022_PROGRAM_ID,
+  // )
+
+  // console.log("\nAssociate Token Address :", JSON.stringify(AssociateTokenAddress))
+
+  return {
+    metadataPointer: JSON.stringify(metadataPointer, null, 2),
+    metadata: JSON.stringify(metadata, null, 2)
+  }
 }
 
 export default getMetaData

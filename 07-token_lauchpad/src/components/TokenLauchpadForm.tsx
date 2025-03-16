@@ -9,7 +9,7 @@ import { useState } from "react"
 import { toast } from "sonner"
 import { Textarea } from "./ui/textarea"
 import { Sparkles, Camera, Tag, Calculator, Lock, Unlock, Coins, FileText, Info, AlertCircle } from "lucide-react"
-import { Card, CardHeader, CardContent, CardFooter } from "./ui/card"
+import { Card, CardHeader, CardContent } from "./ui/card"
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert"
 import { useConnection, useWallet } from "@solana/wallet-adapter-react"
 import createToken from "@/utils/createToken"
@@ -80,13 +80,13 @@ const TokenLaunchpadForm = () => {
     setTokenAddress(null)
 
     try {
-      const mintAddress = await createToken(connection, publicKey, values, sendTransaction)
+      const data = await createToken(connection, publicKey, values, sendTransaction)
       toast.success("Token created successfully!")
-      setTokenAddress(mintAddress)
+      setTokenAddress(data.mintAddress)
       form.reset()
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error creating token:", error)
-      toast.error("Failed to create token. Please try again.")
+      toast.error(`Error : ${error.message}`)
     } finally {
       setIsSubmitting(false)
     }
@@ -330,16 +330,6 @@ const TokenLaunchpadForm = () => {
           </form>
         </Form>
       </CardContent>
-
-      <CardFooter className="bg-muted/20 p-4 border-t border-border flex flex-col sm:flex-row items-center justify-between text-xs text-muted-foreground">
-        <div className="mb-2 sm:mb-0">
-          Token creation will require a transaction fee
-        </div>
-        <div className="flex items-center gap-1">
-          <Sparkles className="h-3.5 w-3.5" />
-          <span>Tokens are created on Solana's network</span>
-        </div>
-      </CardFooter>
     </Card>
   )
 }

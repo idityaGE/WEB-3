@@ -1,5 +1,6 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { clusterApiUrl } from '@solana/web3.js';
+import { toast } from 'sonner';
 
 export type NetworkType = 'mainnet' | 'devnet' | 'testnet' | 'localhost' | 'custom';
 
@@ -11,9 +12,14 @@ interface NetworkContextType {
   setCustomRpcUrl: (url: string) => void;
 }
 
+const MAINNET_RPC_URL = import.meta.env.VITE_MAINNET_RPC_URL;
+if (!MAINNET_RPC_URL) {
+  toast.message("Mainnet Custom RPC url not found and the mainnet-beta might fail, so try using your own custom rpc url form any provider");
+}
+
 // Default fallback RPC URLs
 const DEFAULT_RPC_URLS = {
-  mainnet: import.meta.env.VITE_MAINNET_RPC_URL || clusterApiUrl("mainnet-beta"), // Replace with your RPC provider URL
+  mainnet: MAINNET_RPC_URL || clusterApiUrl("mainnet-beta"),
   devnet: clusterApiUrl('devnet'),
   testnet: clusterApiUrl('testnet'),
   localhost: 'http://localhost:8899',

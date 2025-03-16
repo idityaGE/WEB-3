@@ -10,7 +10,7 @@ import { NetworkProvider } from './context/NetworkContext.tsx'
 createRoot(document.getElementById('root')!).render(
   <NetworkProvider>
     <WalletAdapterProvider>
-      <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
+      <ThemeProvider defaultTheme='light' storageKey='vite-ui-theme'>
         <App />
         <Toaster />
       </ThemeProvider>

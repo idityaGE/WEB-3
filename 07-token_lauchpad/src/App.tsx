@@ -24,7 +24,7 @@ const App = () => {
         <div className="container mx-auto flex items-center justify-center space-x-4">
           <div className="flex items-center space-x-2">
             <a
-              href="https://github.com/username/repo-name"
+              href="https://github.com/idityaGE/WEB-3/tree/main/07-token_lauchpad"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center hover:text-foreground transition-colors"

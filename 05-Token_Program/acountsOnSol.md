@@ -13,18 +13,21 @@ An account on Solana is effectively a record in the global state, consisting of:
 ## 2. Types of Accounts on Solana
 
 ### 2.1 User Accounts (Wallet Accounts)
+
 - Controlled by private keys (keypairs)
 - Store SOL tokens
 - Can authorize transactions
 - Example: `HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH`
 
 ### 2.2 Program Accounts
+
 - Store executable code (smart contracts)
 - Have the `executable` flag set to true
 - Have special permissions on accounts they own
 - Example: Token Program (`TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA`)
 
 ### 2.3 Data Accounts
+
 - Store arbitrary data for programs
 - Owned by a program (only the owning program can modify data)
 - Pay rent to maintain storage on-chain
@@ -33,21 +36,25 @@ An account on Solana is effectively a record in the global state, consisting of:
 ### 2.4 Token-Related Accounts
 
 #### Token Program
+
 - System program that defines token behavior
 - Manages token creation, transfers, and balances
 - Official Solana Token Program: `TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA`
 
 #### Mint Accounts
+
 - Define a token type (like a currency)
 - Store information about supply, decimals, authority
 - Example: USDC mint on Solana: `EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v`
 
 #### Token Accounts
+
 - Store token balances for a specific mint
 - Each user needs a separate token account for each token type
 - Example: `8XgHUtBRXTRGxvZRXtwPdSsRnD6FzGYMgWLpjJxNi1XZ` (holds USDC for a user)
 
 #### Associated Token Accounts (ATAs)
+
 - Special token accounts deterministically derived from:
   - User's wallet address
   - Token mint address
@@ -56,6 +63,7 @@ An account on Solana is effectively a record in the global state, consisting of:
 - Example: ATA for user `Abc123...` for USDC would be derived using both addresses
 
 ### 2.5 System Accounts
+
 - Special accounts owned by the System Program
 - Store protocol-level information
 - Example: Stake accounts, vote accounts
@@ -83,12 +91,14 @@ An account on Solana is effectively a record in the global state, consisting of:
 Let's walk through creating a simple counter program:
 
 1. **Create Program Account**:
+
    ```bash
    # Deploy program that increments a counter
    solana program deploy counter_program.so
    ```
 
 2. **Initialize Data Account**:
+
    ```javascript
    // Create an account to store our counter
    const counterAccount = Keypair.generate();
@@ -107,6 +117,7 @@ Let's walk through creating a simple counter program:
    ```
 
 3. **Interact with Data**:
+
    ```javascript
    // Increment the counter
    const incrementIx = new TransactionInstruction({

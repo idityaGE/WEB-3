@@ -23,7 +23,7 @@ const createATA = async () => {
   console.log("\nDeriving PDA for Associated Token Account...");
   console.log("Seeds used:");
   console.log(" - Owner public key")
-  console.log(" - TOKEN_2022_PROGRAM_ID")
+  console.log(" - TOKEN_2022_PROGRAM_ID") 
   console.log(" - Mint address")
 
   // findProgramAddressSync derives a PDA from seeds and a program ID

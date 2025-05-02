@@ -1,75 +1,90 @@
-# Turborepo Docker starter
+export default `
+## 🌊 LST Solana Demo - Liquid Staking Solution
+---
+LST Solana Demo is a seamless liquid staking platform that displays SOL and liquid staking tokens (lSOL) balances. This platform demonstrates how a staking process could work while allowing users to maintain liquidity through tokenized staking positions.
 
-This is a community-maintained example. If you experience a problem, please submit a pull request with a fix. GitHub Issues will be closed.
 
-## Using this example
+---
+## 🎥 Demo
 
-Run the following command:
+youtube: https://youtu.be/VqpH3kvCJMc
 
-```sh
-npx create-turbo@latest -e with-docker
-```
+---
 
-## What's inside?
+## ✨ Features
 
-This Turborepo includes the following:
+| 💧 **Liquid Staking Demonstration** | 🔄 **Instant Redemption Simulation** | 🔐 **Secure Architecture** |
+|:---------------------|:--------------------------|:---------------------|
+| Visualize how SOL staking creates lSOL tokens that represent staked positions | See how redemption works without waiting for unbonding periods | Built on Solana's secure infrastructure with robust transaction handling |
 
-### Apps and Packages
+| 📊 **Real-time Analytics** | 🔗 **Blockchain Integration** | 📱 **User-Friendly Interface** |
+|:--------------------------|:------------------------------|:------------------------------|
+| Track platform wallet balances, token circulation, and total value in real-time | Fully integrated with Solana blockchain for transparent operations | Intuitive UI designed for both beginners and experienced users |
 
-- `web`: a [Next.js](https://nextjs.org/) app
-- `api`: an [Express](https://expressjs.com/) server
-- `@repo/ui`: a React component library
-- `@repo/logger`: Isomorphic logger (a small wrapper around console.log)
-- `@repo/eslint-config`: ESLint presets
-- `@repo/typescript-config`: tsconfig.json's used throughout the monorepo
-- `@repo/jest-presets`: Jest configurations
+---
+## 📝 Project Note
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+> This is a demo project built on Solana's Devnet to showcase a simple Liquid Staking Token (LST) platform. 
+> The platform allows you to stake your SOL and receive lSOL tokens in return at a 1:1 ratio.
+> Behind the scenes, I'm using Helius webhooks to track transfers, with a backend that handles the transfer of SOL and tokens from my wallet.
 
-### Docker
+---
+## 🛑 Tech Stack
 
-This repo is configured to be built with Docker, and Docker compose. To build all apps in this repo:
+| Frontend | Backend | Blockchain Integration |
+|:---------|:--------|:----------------------|
+| **Next.js** with TypeScript 🚀 | Express.js API for webhook processing 🌐 | Solana Web3.js for blockchain interactions 🔗 |
+| TailwindCSS + Shadcn UI 🎨 | Turborepo for monorepo management ⚙️ | Solana SPL Token for token operations 💰 |
+| Tanstack Query for data fetching 📊 | Helius Webhook for real-time blockchain events 🔄 | bs58 for encoding/decoding 🔐 |
 
-```
-# Install dependencies
-yarn install
+## 📚 How It Works
 
-# Create a network, which allows containers to communicate
-# with each other, by using their container name as a hostname
-docker network create app_network
+### For Users:
 
-# Build prod using new BuildKit engine
-COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yml build
+1. **View Platform Details**: See the platform wallet address and lSOL token mint address
+2. **View Balances**: Instantly see the platform's SOL balance and lSOL token circulation
+3. **Simulated Staking**: Visualize how sending SOL to the platform wallet would receive lSOL tokens
+4. **Monitor Performance**: Track the platform's token values in real-time
+5. **Simulated Redemption**: Understand how returning lSOL to the platform would receive SOL back
 
-# Start prod in detached mode
-docker-compose -f docker-compose.yml up -d
-```
+### Technical Flow:
 
-Open http://localhost:3000.
+1. Platform displays wallet address and token mint information for demonstration
+2. Helius webhooks detect SOL transfer transactions to the platform wallet in real-time
+3. Express backend validates incoming transactions and processes the request
+4. Backend mints equivalent lSOL tokens based on current exchange rate
+5. For redemption simulation, Helius detects incoming lSOL tokens
+6. Backend burns the lSOL and returns SOL (plus rewards) to the sender's wallet
 
-To shutdown all running containers:
+---
+## 📸 Platform Screenshots
 
-```
-# Stop running containers started by docker-compse
- docker-compose -f docker-compose.yml down
-```
+![LST Solana Demo Platform](https://res.cloudinary.com/dwdbqwqxk/image/upload/v1746219693/Screenshot_2025-05-03_022609_pcimso.png)
 
-### Remote Caching
+---
+## 🌟 Benefits of Liquid Staking
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+- **Maintain Liquidity**: Use lSOL in DeFi protocols while earning staking rewards
+- **No Lockup Period**: Avoid traditional staking lockup periods with instant redemption
+- **Compound Returns**: Benefit from staking rewards and potential lSOL appreciation
+- **Simplified Staking**: No need to manage validators or worry about slashing risks
+- **Transparent Operations**: All transactions are recorded on-chain for verification
 
-This example includes optional remote caching. In the Dockerfiles of the apps, uncomment the build arguments for `TURBO_TEAM` and `TURBO_TOKEN`. Then, pass these build arguments to your Docker build.
+---
+## 🔧 Backend Architecture
 
-You can test this behavior using a command like:
+The platform runs on a robust Express.js backend that:
 
-`docker build -f apps/web/Dockerfile . --build-arg TURBO_TEAM=“your-team-name” --build-arg TURBO_TOKEN=“your-token“ --no-cache`
+- **Processes Helius Webhooks**: Listens for on-chain events like token transfers and SOL movements
+- **Validates Transactions**: Ensures all incoming transactions meet security requirements
+- **Automates Token Operations**: Handles minting of lSOL when SOL is received and burning when lSOL is returned
+- **Maintains Exchange Rate**: Calculates and updates the SOL/lSOL exchange rate based on staking rewards
+- **Provides Real-time Data**: Exposes API endpoints for frontend to display current wallet balances and token information
 
-### Utilities
+---
+### 🔗 Resources
 
-This Turborepo has some additional tools already setup for you:
+- [GitHub Repository](https://github.com/idityaGE/WEB-3/tree/main/13-LST/platform-code)
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Jest](https://jestjs.io) test runner for all things JavaScript
-- [Prettier](https://prettier.io) for code formatting
+---
+`

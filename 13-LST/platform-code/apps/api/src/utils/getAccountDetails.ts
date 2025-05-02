@@ -39,7 +39,6 @@ export const getAccountDetails = async (wallet: Keypair, mint: PublicKey) => {
         TOKEN_2022_PROGRAM_ID
       );
       const token_bal = await connection.getTokenAccountBalance(associatedTokenAddress, "confirmed");
-      console.log(token_bal)
       accDetails.tokenBalance = parseFloat(token_bal.value.amount);
     } catch (error) {
       console.warn(`Warning: Could not fetch token balance: ${error instanceof Error ? error.message : String(error)}`);

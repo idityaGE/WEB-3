@@ -36,6 +36,8 @@ export const webhookHandler = async (req: Request, res: Response) => {
       });
     }
 
+    //TODO: Check if the signature from the req.body is valid (just validate if its correct from blockchain)
+
     const processedData = processData(req.body);
 
     if (!processedData.isValid) {
@@ -79,7 +81,7 @@ export const webhookHandler = async (req: Request, res: Response) => {
       case TransactionType.RECEIVED_TOKEN:
         if (processedData.fromAddress) {
           const result = await sendSol(processedData.fromAddress, processedData.amount);
-          if(result.success) {
+          if (result.success) {
             return res.status(200).json({
               success: true,
               message: `Successfully processed lSOL Token receipt and sent equivalent SOL`,

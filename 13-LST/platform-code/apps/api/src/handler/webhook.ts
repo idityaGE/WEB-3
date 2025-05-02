@@ -7,7 +7,7 @@ export const webhookHandler = async (req: Request, res: Response) => {
   try {
     const paramAuthHeader = req.headers['authorization'] as string;
     if (!paramAuthHeader) {
-      return res.status(401).json({
+      return res.status(200).json({
         success: false,
         message: 'Authorization header missing'
       });
@@ -16,21 +16,21 @@ export const webhookHandler = async (req: Request, res: Response) => {
     const authHeader = process.env.AUTH_HEADER as string;
     if (!authHeader) {
       console.error("AUTH_HEADER environment variable not set");
-      return res.status(500).json({
+      return res.status(200).json({
         success: false,
         message: "Server configuration error"
       });
     }
 
     if (authHeader !== paramAuthHeader) {
-      return res.status(401).json({
+      return res.status(200).json({
         success: false,
         message: "Unauthorized (Invalid authorization header)"
       });
     }
 
     if (!req.body) {
-      return res.status(400).json({
+      return res.status(200).json({
         success: false,
         message: "Missing request body"
       });
@@ -38,14 +38,23 @@ export const webhookHandler = async (req: Request, res: Response) => {
 
     //TODO: Check if the signature from the req.body is valid (just validate if its correct from blockchain)
 
-    const processedData = processData(req.body);
+    const data = Array.isArray(req.body) ? req.body[0] : req.body;
+    console.log("Processing transaction:", JSON.stringify(data, null, 2));
+
+    const processedData = processData(data);
+
+    // console.log("Reached here 1")
+
+    // console.log("PRocessedData :", processedData)
 
     if (!processedData.isValid) {
-      return res.status(400).json({
+      return res.status(200).json({
         success: false,
         message: processedData.validationMessage
       });
     }
+
+    // console.log("Reached here 2")
 
     switch (processedData.type) {
       case TransactionType.RECEIVED_SOL:
@@ -64,14 +73,14 @@ export const webhookHandler = async (req: Request, res: Response) => {
               }
             });
           } else {
-            return res.status(500).json({
+            return res.status(200).json({
               success: false,
               message: "Error sending tokens in response to SOL receipt",
               error: result.error
             });
           }
         } else {
-          return res.status(400).json({
+          return res.status(200).json({
             success: false,
             message: "Invalid SOL amount or sender address"
           });
@@ -95,14 +104,14 @@ export const webhookHandler = async (req: Request, res: Response) => {
               }
             })
           } else {
-            return res.status(500).json({
+            return res.status(200).json({
               success: false,
               message: "Error sending SOL in response to lSOL Token receipt",
               error: result.error
             });
           }
         } else {
-          return res.status(400).json({
+          return res.status(200).json({
             success: false,
             message: "Invalid lSOL amount or sender address"
           });
@@ -110,7 +119,7 @@ export const webhookHandler = async (req: Request, res: Response) => {
         break;
 
       default:
-        return res.status(400).json({
+        return res.status(200).json({
           success: false,
           message: "Unrecognized transaction type"
         });
@@ -118,7 +127,7 @@ export const webhookHandler = async (req: Request, res: Response) => {
 
   } catch (error) {
     console.error("Webhook error:", error);
-    return res.status(500).json({
+    return res.status(200).json({
       success: false,
       message: "Server error processing request",
       error: error

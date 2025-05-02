@@ -18,7 +18,6 @@ const Home = () => {
     staleTime: 5000
   });
 
-  const [copied, setCopied] = useState(false);
   const [tokenAddressCopied, setTokenAddressCopied] = useState(false);
   const [walletAddressCopied, setWalletAddressCopied] = useState(false);
   const [tokenAddress, setTokenAddress] = useState("H7HnKPZp1vJS7k8bT16DpCNaaVEdM1zmarp4dfAfvyRy");
@@ -56,7 +55,7 @@ const Home = () => {
             <h1 className="text-xl font-semibold">Solana LST</h1>
           </div>
           <a
-            href="https://github.com/YourUsername/WEB-3/tree/main/13-LST"
+            href="https://github.com/idityaGE/WEB-3/tree/main/13-LST"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-sm hover:text-gray-600 dark:hover:text-gray-300 transition-colors"

@@ -1,6 +1,6 @@
 require('dotenv').config();
 import { json, urlencoded } from "body-parser";
-import express, { type Express, Request, Response } from "express";
+import express, { type Express } from "express";
 import morgan from "morgan";
 import cors from "cors";
 import { webhookHandler } from "./handler/webhook";

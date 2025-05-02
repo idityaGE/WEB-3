@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { sendToken } from "../utils/sendToken";
+import { sendSol } from "../utils/sendSol";
+import { processData, TransactionType } from "../utils/processData";
 
 export const webhookHandler = async (req: Request, res: Response) => {
   try {
@@ -27,59 +29,91 @@ export const webhookHandler = async (req: Request, res: Response) => {
       });
     }
 
-    let body;
-    let data;
-
-    try {
-      if (typeof req.body === 'object' && req.body !== null) {
-        data = req.body;
-      } else {
-        body = req.body();
-        data = JSON.parse(body);
-      }
-
-      console.log("Received data:", data);
-    } catch (error) {
+    if (!req.body) {
       return res.status(400).json({
         success: false,
-        message: "Invalid request body format"
+        message: "Missing request body"
       });
     }
 
-    if (!data.nativeTransfers[0] ||
-      !data.nativeTransfers[0].nativeTransfers ||
-      !data.nativeTransfers[0].amount) {
+    const processedData = processData(req.body);
+
+    if (!processedData.isValid) {
       return res.status(400).json({
         success: false,
-        message: "Missing required fields: nativeTransfers.nativeTransfers or nativeTransfers.amount"
+        message: processedData.validationMessage
       });
     }
 
-    const from = data.nativeTransfers[0].nativeTransfers;
-    const amount = data.nativeTransfers[0].amount;
+    switch (processedData.type) {
+      case TransactionType.RECEIVED_SOL:
+        if (processedData.fromAddress) {
+          const result = await sendToken(processedData.fromAddress, processedData.amount);
+          if (result.success) {
+            return res.status(200).json({
+              success: true,
+              message: `Successfully processed SOL receipt and sent equivalent tokens`,
+              transaction: {
+                receivedAmount: processedData.amount,
+                receivedType: "SOL",
+                sender: processedData.toAddress,
+                recipient: processedData.fromAddress,
+                transferSignature: result.signature
+              }
+            });
+          } else {
+            return res.status(500).json({
+              success: false,
+              message: "Error sending tokens in response to SOL receipt",
+              error: result.error
+            });
+          }
+        } else {
+          return res.status(400).json({
+            success: false,
+            message: "Invalid SOL amount or sender address"
+          });
+        }
+        break;
 
-    if (typeof amount !== 'number' || amount <= 0) {
-      return res.status(400).json({
-        success: false,
-        message: "Amount must be a positive number"
-      });
+      case TransactionType.RECEIVED_TOKEN:
+        if (processedData.fromAddress) {
+          const result = await sendSol(processedData.fromAddress, processedData.amount);
+          if(result.success) {
+            return res.status(200).json({
+              success: true,
+              message: `Successfully processed lSOL Token receipt and sent equivalent SOL`,
+              transaction: {
+                receivedAmount: processedData.amount,
+                receivedType: "lSOl",
+                mint: processedData.mint,
+                sender: processedData.toAddress,
+                recipient: processedData.fromAddress,
+                transferSignature: result.signature
+              }
+            })
+          } else {
+            return res.status(500).json({
+              success: false,
+              message: "Error sending SOL in response to lSOL Token receipt",
+              error: result.error
+            });
+          }
+        } else {
+          return res.status(400).json({
+            success: false,
+            message: "Invalid lSOL amount or sender address"
+          });
+        }
+        break;
+
+      default:
+        return res.status(400).json({
+          success: false,
+          message: "Unrecognized transaction type"
+        });
     }
 
-    const result = await sendToken(from, amount);
-
-    if (result.success) {
-      return res.status(200).json({
-        success: true,
-        message: "Token transfer successful",
-        signature: result.signature
-      });
-    } else {
-      return res.status(500).json({
-        success: false,
-        message: "Token transfer failed",
-        error: result.error
-      });
-    }
   } catch (error) {
     console.error("Webhook error:", error);
     return res.status(500).json({

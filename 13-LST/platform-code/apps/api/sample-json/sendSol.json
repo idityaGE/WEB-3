@@ -1,0 +1,65 @@
+{
+  "accountData": [
+    {
+      "account": "5DCUpetAVc97Z3gdHFssB11DfnkSf8rNHs2E3hycKLcm",
+      "nativeBalanceChange": -1000005270,
+      "tokenBalanceChanges": []
+    },
+    {
+      "account": "77xACsirSsQjUNGtwWqvk3un63sJ8xG3Akc8C24jxbec",
+      "nativeBalanceChange": 1000000000,
+      "tokenBalanceChanges": []
+    },
+    {
+      "account": "11111111111111111111111111111111",
+      "nativeBalanceChange": 0,
+      "tokenBalanceChanges": []
+    },
+    {
+      "account": "ComputeBudget111111111111111111111111111111",
+      "nativeBalanceChange": 0,
+      "tokenBalanceChanges": []
+    }
+  ],
+  "description": "5DCUpetAVc97Z3gdHFssB11DfnkSf8rNHs2E3hycKLcm transferred 1 SOL to 77xACsirSsQjUNGtwWqvk3un63sJ8xG3Akc8C24jxbec.",
+  "events": [],
+  "fee": 5270,
+  "feePayer": "5DCUpetAVc97Z3gdHFssB11DfnkSf8rNHs2E3hycKLcm",
+  "instructions": [
+    {
+      "accounts": [],
+      "data": "Eoaz95",
+      "innerInstructions": [],
+      "programId": "ComputeBudget111111111111111111111111111111"
+    },
+    {
+      "accounts": [],
+      "data": "3Jv73z5Y9SRV",
+      "innerInstructions": [],
+      "programId": "ComputeBudget111111111111111111111111111111"
+    },
+    {
+      "accounts": [
+        "5DCUpetAVc97Z3gdHFssB11DfnkSf8rNHs2E3hycKLcm",
+        "77xACsirSsQjUNGtwWqvk3un63sJ8xG3Akc8C24jxbec"
+      ],
+      "data": "3Bxs3zzLZLuLQEYX",
+      "innerInstructions": [],
+      "programId": "11111111111111111111111111111111"
+    }
+  ],
+  "nativeTransfers": [
+    {
+      "amount": 1000000000,
+      "fromUserAccount": "5DCUpetAVc97Z3gdHFssB11DfnkSf8rNHs2E3hycKLcm",
+      "toUserAccount": "77xACsirSsQjUNGtwWqvk3un63sJ8xG3Akc8C24jxbec"
+    }
+  ],
+  "signature": "5xegSZTvBwn455kwdG61mEhcmm2DLkMhxcoZuumUpLjE5FDxxdhtQQsSSknWiA7G79iVf2zdNqpxjoNYfDpd7b3u",
+  "slot": 378114928,
+  "source": "SYSTEM_PROGRAM",
+  "timestamp": 1746163635,
+  "tokenTransfers": [],
+  "transactionError": null,
+  "type": "TRANSFER"
+}

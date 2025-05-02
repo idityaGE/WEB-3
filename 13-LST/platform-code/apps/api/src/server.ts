@@ -4,6 +4,7 @@ import express, { type Express } from "express";
 import morgan from "morgan";
 import cors from "cors";
 import { webhookHandler } from "./handler/webhook";
+import { detailsHandler } from "./handler/details";
 
 export const createServer = (): Express => {
   const app = express();
@@ -19,6 +20,8 @@ export const createServer = (): Express => {
     })
 
     .post("/webhook", webhookHandler)
+
+    .get("/details", detailsHandler)
 
   return app;
 };

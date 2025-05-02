@@ -10,7 +10,7 @@ import {
 
 import bs58 from "bs58";
 
-const devnetURL = "https://api.devnet.solana.com";
+export const devnetURL = "https://api.devnet.solana.com";
 
 export const sendSol = async (to: PublicKey | string, tokenAmount: number): Promise<{
   success: boolean;

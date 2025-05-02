@@ -15,8 +15,7 @@ import {
 } from "@solana/spl-token";
 
 import bs58 from "bs58";
-
-const devnetURL = "https://api.devnet.solana.com";
+import { devnetURL } from "./sendSol";
 
 export const sendToken = async (to: PublicKey | string, amountInLamports: number): Promise<{
   success: boolean;

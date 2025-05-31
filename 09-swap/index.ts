@@ -70,12 +70,12 @@ try {
 			const data = JSON.stringify({
 				userPublicKey: owner.publicKey.toBase58(),
 				quoteResponse,
-				dynamicComputeUnitLimit: true, // Automatically adjust compute limits
-				dynamicSlippage: true, // Adjust slippage based on market conditions
-				prioritizationFeeLamports: { // Priority fee configuration for faster processing
+				dynamicComputeUnitLimit: true, 			// Automatically adjust compute limits
+				dynamicSlippage: true, 							// Adjust slippage based on market conditions
+				prioritizationFeeLamports: { 				// Priority fee configuration for faster processing
 					priorityLevelWithMaxLamports: {
-						maxLamports: 1000000, // Maximum priority fee (1 SOL)
-						priorityLevel: "veryHigh" // Priority level for transaction
+						maxLamports: 1000000, 					// Maximum priority fee (1 SOL)
+						priorityLevel: "veryHigh" 			// Priority level for transaction
 					}
 				}
 			});

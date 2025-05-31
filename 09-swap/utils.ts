@@ -13,9 +13,8 @@ export const getQuote = async (URL: string) => {
     const res = await axios.get(URL);
     return res.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
+    if (axios.isAxiosError(error)) 
       throw new Error(`Failed to get quote: ${error.message}. Status: ${error.response?.status}`);
-    }
     throw new Error(`Failed to get quote: ${error}`);
   }
 };
@@ -27,9 +26,8 @@ export const getSwapInstruction = async (URL: string, body: string) => {
     });
     return res.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
+    if (axios.isAxiosError(error))
       throw new Error(`Failed to get swap instructions: ${error.message}. Status: ${error.response?.status}`);
-    }
     throw new Error(`Failed to get swap instructions: ${error}`);
   }
 };

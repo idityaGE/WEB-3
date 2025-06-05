@@ -1,3 +1,6 @@
 [submodule "07-token-lauchpad"]
 	path = 07-token-lauchpad
 	url = https://github.com/idityaGE/Solana-Token-Lauchpad.git
+[submodule "16-foundry/forge-basic/counter/lib/forge-std"]
+	path = 16-foundry/forge-basic/counter/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std

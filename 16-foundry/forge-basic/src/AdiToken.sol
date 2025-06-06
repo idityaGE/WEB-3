@@ -5,6 +5,7 @@ import "../node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 // import {console} from "forge-std/console.sol";
 
+// forge create --rpc-url <your_rpc_url> --private-key <your_private_key> src/MyContract.sol:MyContract
 contract AdiToken is ERC20, Ownable {
     constructor(uint256 _initSupply) ERC20("Adi Token", "ADI") Ownable(msg.sender) {
         // console.log("Adi Token contract initialized"); // use `-vv` two verbosity

@@ -1,6 +1,3 @@
 [submodule "07-token-lauchpad"]
 	path = 07-token-lauchpad
 	url = https://github.com/idityaGE/Solana-Token-Lauchpad.git
-[submodule "17-lock-and-bridge/lib/openzeppelin-contracts"]
-	path = 17-lock-and-bridge/lib/openzeppelin-contracts
-	url = https://github.com/OpenZeppelin/openzeppelin-contracts

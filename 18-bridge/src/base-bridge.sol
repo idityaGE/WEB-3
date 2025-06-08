@@ -7,6 +7,10 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {BADI} from "./BADI.sol";
 
 contract BaseBridge is Ownable {
+    struct BridgeDetails {
+        uint256 amount;
+    }
+
     BADI private btok;
 
     event BurnADI(address indexed user, uint256 value);

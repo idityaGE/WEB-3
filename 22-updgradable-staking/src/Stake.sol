@@ -19,7 +19,7 @@ contract Stake is Ownable {
     event Unstaked(address indexed user, uint256 amoount);
 
     function stake() external payable {
-        require(msg.value > 0, "Not a valid payment");
+        require(msg.value < 0, "Not a valid payment");
         if (stakes[msg.sender].amount > 0) {
             stakes[msg.sender].amount += msg.value;
         } else {

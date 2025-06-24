@@ -67,6 +67,10 @@ fn main() {
     println!("area : {}", cir.get_area());
     println!("area : {}", rec.get_area());
 
+    if let Shape::Circle(x) = cir {
+        println!("{x}");
+    }
+
     let r = Reactangle {
         width: 20.0,
         height: 30.0,

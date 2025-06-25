@@ -1,22 +1,22 @@
 use chrono::{Local, Utc};
-use std::{f32::consts::PI, fs};
+use std::{f32::consts::PI, fs, ops::Mul};
 // use chrono::prelude::*;
 use dotenv::dotenv;
 use std::env;
 
 const _THREE_HOURS_IN_SECONDS: u32 = 60 * 60 * 3;
 
-struct Reactangle {
-    width: f32,
-    height: f32,
+struct Reactangle<T> {
+    width: T,
+    height: T,
 }
 
-impl Reactangle {
-    pub fn area(&self) -> f32 {
+impl<T: Mul<Output = T> + Copy> Reactangle<T> {
+    pub fn area(&self) -> T {
         return self.height * self.width;
     }
 
-    fn what() -> &'static str {
+    fn _what() -> &'static str {
         // if you don't accept the &self then its similar to static function
         return "Boom reactangle";
     }
@@ -110,7 +110,7 @@ fn main() {
     };
 
     println!("{}", r.area());
-    println!("{}", Reactangle::what());
+    // println!("{}", Reactangle::_what());
 
     let x = 5;
     let mut x = x + 1; // Shadowing

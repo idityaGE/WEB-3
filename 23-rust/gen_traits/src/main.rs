@@ -30,7 +30,6 @@ fn print_area<T: Shape>(s: T) {
 }
 
 fn main() {
-
     //* Tuple
     let tup: (i32, u32, bool) = (2, 32, true);
     let (a, b, c) = &tup;
@@ -42,10 +41,42 @@ fn main() {
 
     //* Array
     let arr = [1, 2, 3, 4, 5];
-    let c_arr = [3; 5];
+    let _c_arr = [3; 5];
 
     let mut index = String::new();
-    io::stdin().read_line(&mut index).expect("Failed to reaad the input");
-    let index: usize = index.trim().parse().expect("Index entered was not a number");
+    io::stdin()
+        .read_line(&mut index)
+        .expect("Failed to reaad the input");
+    let index: usize = index
+        .trim()
+        .parse()
+        .expect("Index entered was not a number");
     println!("{}", arr[index]);
-}   
+
+    let _xn = {
+        let x = 3;
+        x + 1
+    };
+
+    let condition = true;
+    let _y = if condition { 5 } else { 6 };
+    // let yn = if condition { 5 } else { "six" }; // Error: `if` and `else` have incompatible types
+
+    loop {
+        println!("Agaian!");
+        break;
+    }
+
+    let mut counter = 0;
+    let result = loop {
+        counter += 1;
+        if counter == 10 {
+            // You can also return from inside a loop.
+            // While break only exits the current loop, return always exits the current function.
+            break counter * 2;
+        }
+    };
+    println!("reult : {result}");
+
+    
+}

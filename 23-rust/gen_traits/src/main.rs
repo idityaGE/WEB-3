@@ -1,9 +1,19 @@
-use std::{f32::consts::PI, io, ops::Mul};
+use std::{
+    f32::consts::PI,
+    fmt::{Debug, Display},
+    io,
+    ops::Mul,
+};
 pub mod test;
+
 trait Shape {
     fn area(&self) -> f32;
-}
 
+    // give a default implementation
+    fn summary(&self) -> String {
+        "Default Implementation".to_owned()
+    }
+}
 struct Rectangle<T> {
     width: T,
     height: T,
@@ -29,7 +39,55 @@ fn print_area<T: Shape>(s: T) {
     println!("{}", s.area())
 }
 
+// Macro
+
+macro_rules! say_my_name {
+    () => {
+        println!("Adii 🐧");
+    };
+}
+
+#[derive(Debug)]
+struct User {
+    name: String,
+    password: String,
+    age: u8,
+}
+
+impl Display for User {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "User {{\n\tname: {}\n\tpassword: {}\n\tage: {}\n}}\n",
+            self.name, self.password, self.age
+        )
+    }
+}
+
+#[derive(Debug, Clone, Copy)]
+struct Point {
+    x: i32,
+    y: i32,
+}
+
 fn main() {
+    // cargo install cargo-expand (binary)
+    // cargo expand
+    let p1 = Point { x: 1, y: 1 };
+    let p2 = p1;
+    println!("{:?} {:?}", p1, p2);
+
+    let u = User {
+        name: "Aditya".to_string(),
+        password: "no_gonna_tell_you".to_string(),
+        age: 20,
+    };
+    // {} => display, {:?} => debug
+    println!("{:?}", u); // there is macro to impl Debug trait
+    println!("{}", u); // no macro for Display trait
+
+    say_my_name!();
+
     //* Tuple
     let tup: (i32, u32, bool) = (2, 32, true);
     let (a, b, c) = &tup;
@@ -78,5 +136,5 @@ fn main() {
     };
     println!("reult : {result}");
 
-    
+    let _v = vec![2; 5];
 }

@@ -64,7 +64,7 @@ impl Display for User {
     }
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy)] // by default struct will not allow copy traits as the stack variables
 struct Point {
     x: i32,
     y: i32,
@@ -74,7 +74,7 @@ fn main() {
     // cargo install cargo-expand (binary)
     // cargo expand
     let p1 = Point { x: 1, y: 1 };
-    let p2 = p1;
+    let p2: Point = p1;
     println!("{:?} {:?}", p1, p2);
 
     let u = User {

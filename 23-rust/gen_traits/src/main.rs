@@ -1,3 +1,5 @@
+#![allow(unused_variables)]
+
 use std::{
     f32::consts::PI,
     fmt::{Debug, Display},
@@ -70,7 +72,20 @@ struct Point {
     y: i32,
 }
 
+macro_rules! generate_function {
+    ($($fn_name:ident),*) => {
+        $(fn $fn_name() {
+            println!("Hello from {}", stringify!($fn_name));
+        })*
+    };
+}
+
+generate_function!(foo, bar);
+
 fn main() {
+    foo();
+    bar();
+
     // cargo install cargo-expand (binary)
     // cargo expand
     let p1 = Point { x: 1, y: 1 };

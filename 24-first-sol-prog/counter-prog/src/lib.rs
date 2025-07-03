@@ -1,4 +1,4 @@
-#![allow(unused_variables)]
+#![allow(unused_variables, unexpected_cfgs)]
 
 use std::io::Error;
 use borsh::{BorshDeserialize, BorshSerialize};
@@ -27,7 +27,9 @@ pub fn counter_prog(
     accounts: &[AccountInfo],
     instruction_data: &[u8],
 ) -> ProgramResult {
+    // get first account details
     let acc: &AccountInfo<'_> = next_account_info(&mut accounts.iter())?;
+    // borrow the acount details
     let mut acc_data: Counter = Counter::try_from_slice(&acc.data.borrow())?;
 
     let intruction_data: Result<IntructionData, Error> =

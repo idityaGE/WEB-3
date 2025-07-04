@@ -1,3 +1,4 @@
+#![allow(unused_variables, dead_code, unused_imports)]
 /*
 crate
  └── front_of_house
@@ -27,7 +28,7 @@ crate
 mod front_of_house;
 
 // use keyword to bring the path into the scope
-use front_of_house::hosting;
+pub use front_of_house::hosting;
 // use crate::front_of_house::hosting;
 // use self::front_of_house::hosting;  // self repr curr module
 

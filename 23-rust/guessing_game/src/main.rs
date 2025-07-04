@@ -28,11 +28,17 @@ fn main() {
                 cnt += 1;
                 num
             }
-            Err(_) => { // The underscore, _, is a catch-all value; in this example, we’re saying we want to match all Err values, no matter what information they have inside them.
+            Err(_) => {
+                // The underscore, _, is a catch-all value; in this example, we’re saying we want to match all Err values, no matter what information they have inside them.
                 println!("please enter a number");
                 continue; // go to next iteration
             }
         };
+
+        if guess > 100 {
+            println!("Value can only be from 0 to 100");
+            continue;
+        }
 
         match guess.cmp(&secret_num) {
             Ordering::Less => println!("Too small!"),

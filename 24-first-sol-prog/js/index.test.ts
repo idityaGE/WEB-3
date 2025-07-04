@@ -1,6 +1,6 @@
 import { expect, test } from 'bun:test'
-import { Connection, Keypair, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from '@solana/web3.js'
-import { COUNTER_SIZE, schema } from './types'
+import { Connection, Keypair, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction, TransactionInstruction } from '@solana/web3.js'
+import { COUNTER_SIZE, CounterAccount, schema } from './types'
 import * as borsh from 'borsh'
 
 const adminAccount = Keypair.generate()
@@ -39,3 +39,40 @@ test("Initialization Test", async () => {
   }
   expect(dataInBytes.count).toBe(0);
 })
+
+test("Interacting with Counter Program", async () => {
+  const connection = new Connection("http://127.0.0.1:8899");
+
+  const txn = new Transaction().add(
+    new TransactionInstruction({
+      keys: [{
+        pubkey: dataAccount.publicKey,
+        isSigner: true,
+        isWritable: true
+      }],
+      programId: programId,
+      data: Buffer.from(new Uint8Array([0, 1, 0, 0, 0]))
+      // borsh.sendTransaction(schema, new CounterAccount({count: 1}));
+      /* first bit is either incr or decr and next 4 bytes (u32) is data
+      enum IntructionData {
+          Increment(u32),
+          Decrement(u32),
+      }
+      */
+    })
+  )
+
+  const txnHash = await connection.sendTransaction(txn, [adminAccount, dataAccount]);
+  await connection.confirmTransaction(txnHash);
+  console.log("Txn Hash : ", txnHash);
+
+  const counterAccount = await connection.getAccountInfo(dataAccount.publicKey);
+  if (!counterAccount) {
+    throw new Error("Counter Account is not Found");
+  }
+  const counter = borsh.deserialize(schema, counterAccount.data) as CounterAccount;
+  console.log("Count : ", counter.count)
+  expect(counter.count).toBe(1);
+})
+
+

@@ -2,7 +2,9 @@
 use std::collections::HashMap;
 
 fn main() {
-    // #===================== Vec =====================#
+    // [x] #===================== Vec =====================#
+    // FIXME:  Good Morning
+    // TODO: Noting to do
 
     let vv = vec![1, 2, 3, 4, 5];
     println!("vv : {:?}", vv);
@@ -38,7 +40,7 @@ fn main() {
 
     // #===================== Vec =====================#
 
-    // #===================== String =====================#
+    // [ ] #===================== String =====================#
     // In Rust String are stored as UTF-8 encoded bytes
     let s1 = String::new();
     let s2 = "intial content";
@@ -71,12 +73,12 @@ fn main() {
 
     // #===================== String =====================#
 
-    // #===================== HashMap =====================#
+    // [ ] #===================== HashMap =====================#
     let mut mp: HashMap<String, u32> = HashMap::new();
     mp.insert(String::from("Blue"), 10);
     mp.insert(String::from("Yellow"), 20);
 
-    // get | get_mut
+    // .get() | .get_mut()
     let team_name = String::from("Blue");
     let score = match mp.get(&team_name) {
         Some(value) => value,

@@ -10,6 +10,12 @@ struct User {
     age: u8,
 }
 
+#[derive(BorshDeserialize, BorshSerialize)]
+enum Counter {
+    Increment(u32),
+    Decrement(u32),
+}
+
 fn main() {
     let u = User {
         id: 69,
@@ -25,4 +31,9 @@ fn main() {
     let dece = User::try_from_slice(&buffer).unwrap();
     assert_eq!(u, dece);
     println!("{:?}", dece);
+
+    let inc = Counter::Increment(1);
+    let mut buffer: Vec<u8> = Vec::new();
+    inc.serialize(&mut buffer).unwrap();
+    println!("{:?}", buffer);
 }

@@ -6,6 +6,7 @@ use solana_program::{
     entrypoint,
     entrypoint::ProgramResult,
     msg,
+    program_error::ProgramError,
     pubkey::Pubkey,
 };
 #[derive(BorshDeserialize, BorshSerialize)]
@@ -21,6 +22,11 @@ pub fn process_instruction(
 ) -> ProgramResult {
     let mut acc_iter = accounts.iter();
     let data_account = next_account_info(&mut acc_iter)?;
+
+    if data_account.is_signer != true {
+        return Err(ProgramError::InvalidAccountData);
+    }
+
     let mut counter = OnChainData::try_from_slice(&data_account.data.borrow_mut())?;
 
     if counter.count == 0 {

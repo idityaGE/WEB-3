@@ -50,7 +50,7 @@ test("one transfer", () => {
     ],
     programId,
     data
-  })
+  }) 
 
   const tx2 = new Transaction();
   blockhash = svm.latestBlockhash();

@@ -1,8 +1,8 @@
 use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::{
-    account_info::{next_account_info, AccountInfo},
-    entrypoint:: ProgramResult,
+    account_info::{AccountInfo, next_account_info},
     entrypoint,
+    entrypoint::ProgramResult,
     instruction::{AccountMeta, Instruction},
     msg,
     program::invoke,
@@ -22,12 +22,12 @@ pub fn process_instruction(
 
     let instruction = Instruction {
         program_id: *double_contract_add.key,
-        accounts: vec![AccountMeta{
+        accounts: vec![AccountMeta {
             is_signer: data_account.is_signer,
             is_writable: data_account.is_writable,
-            pubkey: *data_account.key
+            pubkey: *data_account.key,
         }],
-        data: vec![]
+        data: vec![],
     };
 
     invoke(&instruction, &[data_account.clone()])?;

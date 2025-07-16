@@ -17,7 +17,7 @@ where
 {
     println!("Annouchment: {ann}");
     if x.len() > y.len() {
-        return x;
+        return x
     }
     y
 }
@@ -46,9 +46,9 @@ fn main() {
 // just use the same lifetime variable and the compiler will consider the smallest one
 fn longest_string<'a>(s1: &'a String, s2: &'a String) -> &'a String {
     if s1.len() > s2.len() {
-        return &s1;
+        return s1;
     }
-    &s2
+    s2
 }
 // fn longest_string<'b, 'a: 'b>(s1: &'a String, s2: &'b String) -> &'b String {
 //     if s1.len() > s2.len() {

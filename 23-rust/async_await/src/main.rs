@@ -11,10 +11,10 @@ use std::time::Duration;
 // but rust doesn't have built-in.
 // it has cummnunity built called `tokio`
 
-// Future in rust is lazy (I don't understand what this means),
+// Future in rust is lazy,
 
 // To run our async code concurrently we can use "tokio tasks"
-//  task is similar to goroutine is golang (a green thread)
+// task is similar to goroutine is golang (a green thread)
 // it allow top level future to run concurrently
 
 // by this macro flavor the task will run concurrently using time slicing instread of seperate thread;

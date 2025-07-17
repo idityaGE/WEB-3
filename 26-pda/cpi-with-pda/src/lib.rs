@@ -28,6 +28,9 @@ pub fn process_instruction(
             let [pda_account_info, recipient_info, system_program_info] = accounts else {
                 return Err(ProgramError::AccountDataTooSmall);
             };
+            if recipient_info.is_signer {
+                return Err(ProgramError::MissingRequiredSignature);
+            }
             let seeds = &[b"pda", recipient_info.key.as_ref()];
             let (expected_pda, pda_bumps) = Pubkey::find_program_address(seeds, program_id);
             if expected_pda != *pda_account_info.key {

@@ -32,7 +32,7 @@ test("sol transfer cpi with pda signer", async () => {
     programId,
     keys: [
       {pubkey: pdaAddress, isWritable: true, isSigner: false},
-      {pubkey: recipient.publicKey, isWritable: true, isSigner: false},
+      {pubkey: recipient.publicKey, isWritable: true, isSigner: true},
       {pubkey: SystemProgram.programId, isWritable: false, isSigner: false},
     ],
     data
@@ -40,6 +40,9 @@ test("sol transfer cpi with pda signer", async () => {
   const tx = new Transaction().add(ix)
   tx.recentBlockhash = svm.latestBlockhash()
   tx.sign(recipient)
+
+  // const message = tx.compileMessage();
+  // console.log(message)
 
   svm.sendTransaction(tx);
   const recipientBalance = svm.getBalance(recipient.publicKey);

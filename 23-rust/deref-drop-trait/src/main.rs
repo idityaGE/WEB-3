@@ -52,7 +52,7 @@ fn main() {
     let m = MyBox::new(String::from("hello"));
     let j = &(*m);
     say_hello(&m); // this below chain deref is done automatically by compiler
-    // &MyBox<String> -> &String -> &str
+    // &MyBox<String> -> &String -> &str 
     say_hello(&(*m)[..]); // without auto-deref
     let j = &(*m)[..];
 

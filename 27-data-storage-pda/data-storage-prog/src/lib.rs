@@ -103,16 +103,16 @@ fn create_user_account(
     }
 
     // Calculate rent for account
-    let rent = Rent::get()?;
+    let rent = Rent::get()?; 
     let required_lamports = rent.minimum_balance(UserData::MAX_SIZE);
 
     // Create the PDA account
     let create_account_ix = system_instruction::create_account(
         user_info.key,             // Payer
-        user_data_account.key,     // New account (PDA)
-        required_lamports,         // Lamports to transfer
-        UserData::MAX_SIZE as u64, // Space to allocate
-        program_id,                // Owner of the new account
+        user_data_account.key,       // New account (PDA)
+        required_lamports,                      // Lamports to transfer
+        UserData::MAX_SIZE as u64,       // Space to allocate
+        program_id,                      // Owner of the new account
     );
 
     // Sign with PDA seeds

@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-calculator_prog = "HvFzpHsbeSs8F7UyRCGknS9JiGNHgyohsL54JBwcdzAh"
+calculator_prog = "2DuGg6G4jvCLBpgtjw6zorM8CyQDeUcAmovZaGwcfCv6"
 
 [registry]
 url = "https://api.apr.dev"

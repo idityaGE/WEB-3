@@ -6,8 +6,8 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
+anchor-cpi-pda = "Gx8jFR1hW3tBoxdXBsvoaD62KNGJ1SVkS5kXxskeJQ6S"
 anchor_cpi = "hVePXvKgG56t7LXDDCFzLLSEKgxqU3gimWnEhsnxHP1"
-anchor_cpi_pda = "Gx8jFR1hW3tBoxdXBsvoaD62KNGJ1SVkS5kXxskeJQ6S"
 
 [registry]
 url = "https://api.apr.dev"

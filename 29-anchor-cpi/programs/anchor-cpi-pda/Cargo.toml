@@ -1,11 +1,12 @@
 [package]
 name = "anchor-cpi-pda"
 version = "0.1.0"
+description = "Created with Anchor"
 edition = "2021"
 
 [lib]
 crate-type = ["cdylib", "lib"]
-name = "anchor_cpi"
+name = "anchor_cpi_pda"
 
 [features]
 default = []
@@ -18,3 +19,4 @@ idl-build = ["anchor-lang/idl-build"]
 
 [dependencies]
 anchor-lang = "0.31.1"
+

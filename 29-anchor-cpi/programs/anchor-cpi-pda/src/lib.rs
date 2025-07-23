@@ -2,7 +2,7 @@ use anchor_lang::prelude::*;
 use anchor_lang::solana_program::{instruction::Instruction, system_instruction};
 use anchor_lang::system_program::{transfer, Transfer};
 
-declare_id!("Gx8jFR1hW3tBoxdXBsvoaD62KNGJ1SVkS5kXxskeJQ6S");
+declare_id!("hVePXvKgG56t7LXDDCFzLLSEKgxqU3gimWnEhsnxHP1");
 
 #[program]
 pub mod anchor_cpi {

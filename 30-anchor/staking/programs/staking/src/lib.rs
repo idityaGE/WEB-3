@@ -87,14 +87,14 @@ pub mod staking {
 
         let signer = &[&seeds[..]];
 
-        let cpi_context = CpiContext::new_with_signer(
+        let cpi_context = CpiContext::new(
             ctx.accounts.system_program.to_account_info(),
             Transfer {
                 from: pda_account.to_account_info(),
                 to: ctx.accounts.user.to_account_info(),
             },
-            signer,
-        );
+        )
+        .with_signer(signer);
 
         transfer(cpi_context, amount)?;
 

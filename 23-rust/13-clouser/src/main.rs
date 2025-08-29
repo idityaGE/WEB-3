@@ -6,6 +6,8 @@ use std::time::Duration;
 // Fn -> immutablity borrow the values
 // FnMut -> mutablity borrows the value
 // FnOnce -> take the ownership of the value, can't be called again, think why ?
+// Because FnOnce closures can move (take ownership of) captured variables. 
+// Once ownership is moved, the closure can't be called again since the captured values are no longer available.
 
 struct Cacher<T>
 where

@@ -44,7 +44,7 @@ fn notify<T: Summary>(item: &T) {
     println!("Breaking news : {}", item.summarize())
 }
 
-// in this code there is an issue what the user send two diff item type which impl Summay
+// in this code there is an issue, what if the user send two diff item type which impl Summay
 pub fn notify1(item1: &impl Summary, item2: &impl Summary) {
     //
 }

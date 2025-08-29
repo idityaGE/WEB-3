@@ -17,7 +17,7 @@ pub mod staking {
 
     use super::*;
 
-    pub fn create_pda_account(ctx: Context<CreatePdaAccount>) -> Result<()> {
+    pub fn create_pda_account(ctx: Context<>) -> Result<()> {
         let pda_account = &mut ctx.accounts.pda_account;
         let clock = Clock::get()?;
 
@@ -25,7 +25,7 @@ pub mod staking {
         pda_account.bump = ctx.bumps.pda_account;
         pda_account.staked_amount = 0;
         pda_account.total_points = 0;
-        pda_account.last_update_time = clock.unix_timestamp;
+        pda_account.last_update_time = clock.uCreatePdaAccountnix_timestamp;
 
         Ok(())
     }
@@ -75,12 +75,12 @@ pub mod staking {
         let pda_account = &mut ctx.accounts.pda_account;
         let clock = Clock::get()?;
 
+        update_points(pda_account, clock.unix_timestamp)?;
+
         require!(
             pda_account.staked_amount >= amount,
             StakeError::InsufficientStake
         );
-
-        update_points(pda_account, clock.unix_timestamp)?;
 
         let user_key = ctx.accounts.user.key();
         let seeds = &[b"pda", user_key.as_ref(), &[pda_account.bump]];
@@ -147,6 +147,7 @@ pub mod staking {
             .unix_timestamp
             .checked_sub(pda_account.last_update_time)
             .ok_or(StakeError::Underflow)? as u64;
+        
         let new_points = calculate_points_earned(pda_account.staked_amount, time_elapsed)?;
 
         let current_total_points = pda_account

@@ -30,7 +30,7 @@ fn main() -> Result<(), Box<dyn DError>> {
                     Err(e) => panic!("Not able to create file"),
                 },
                 other_error => {
-                    panic!("Fuck of match nesting {:?}", other_error);
+                    panic!("Fuck off this match nesting {:?}", other_error);
                 }
             }
         }

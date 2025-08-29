@@ -68,7 +68,7 @@ fn main() {
     let mut scores: HashMap<String, u16> = HashMap::new();
     scores.insert("Aditya".to_string(), 92);
     scores.insert("Ravi".to_string(), 88);
-    if let Some(score) = scores.get("Aditty") {
+    if let Some(score) = scores.get("Aditya") {
         println!("Aditya's score is {}", score);
     }
     scores.entry("Charlie".to_string()).or_insert(33); // inserts only if "Charlie" doesn't exist

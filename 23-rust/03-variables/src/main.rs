@@ -42,10 +42,10 @@ impl Shape {
 fn find_first_a(s: &String) -> Option<u32> {
     let mut idx: u32 = 0;
     for c in s.chars() {
-        idx = idx + 1;
         if c == 'a' || c == 'A' {
             return Some(idx);
         }
+        idx += 1;
     }
     None
 }
@@ -68,7 +68,7 @@ fn _compare<T: Ord>(a: T, b: T) -> bool {
 
 fn main() {
     println!("{}", 0xff); // hexadecimal form : 0xff = 1111_1111 => 255
-    println!("{}", 0b1111_0000); // binary form : 0xff = 1111_0000 => 240
+    println!("{}", 0b1111_0000); // binary form : 0b1111_0000 => 240
 
     dotenv().ok();
     let var = env::var("SAMPLE_ENV").unwrap();

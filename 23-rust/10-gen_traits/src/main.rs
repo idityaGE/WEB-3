@@ -21,7 +21,7 @@ struct Rectangle<T> {
     height: T,
 }
 
-impl<T: Mul<Output = f32> + Copy> Shape for Rectangle<T> {
+impl <T: Mul<Output = f32> + Copy> Shape for Rectangle<T> {
     fn area(&self) -> f32 {
         return self.width * self.height;
     }
@@ -136,7 +136,7 @@ fn main() {
     // let yn = if condition { 5 } else { "six" }; // Error: `if` and `else` have incompatible types
 
     loop {
-        println!("Agaian!");
+        println!("Again!");
         break;
     }
 
@@ -149,7 +149,7 @@ fn main() {
             break counter * 2;
         }
     };
-    println!("reult : {result}");
+    println!("result : {result}");
 
     let _v = vec![2; 5];
 }

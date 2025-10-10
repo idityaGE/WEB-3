@@ -49,7 +49,7 @@ fn main() {
     }
 
     // first order function
-    let _sum: fn(i32, i32) -> i32 = |a: i32, b: i32| -> i32 { a + b };
+    let _sum: fn(i32, i32) -> i32 = |a, b: i32| -> i32 { a + b };
 
     // enum [enumeration]
     enum Color { 
@@ -71,7 +71,8 @@ fn main() {
     if let Some(score) = scores.get("Aditya") {
         println!("Aditya's score is {}", score);
     }
-    scores.entry("Charlie".to_string()).or_insert(33); // inserts only if "Charlie" doesn't exist
+    let entry = scores.entry("Charlie".to_string()).or_insert(33); // inserts only if "Charlie" doesn't exist
+    *entry += 1; // increments Charlie's score by 1
     for (name, score) in &scores {
         println!("{}: {}", name, score);
     }
@@ -83,7 +84,16 @@ fn main() {
     let vec: Vec<i32> = vec![1; 3]; // [1,1,1]
     println!("{:?}", vec);
     
-    
-    
-    
+    for fruit in _fruits {
+        println!("{}", fruit);
+    }
+
+    let mut v = Vec::new();
+    v.push(5);
+    v.push(6);
+    v.push(7);
+
+    for i in &v {
+        println!("{}", i);
+    }
 }

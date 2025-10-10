@@ -28,13 +28,13 @@ fn main() {
     let str1 = String::from("Aditya");
     let ans;
     {
-        let str2 = String::from("Maurya");
-        ans = longest_string(&str1, &str2);
+        let str2 = String::from("Maurya111");
+        ans = longest_string(&str1, &str2); // returns the str2
         println!("{}", ans);
-    }
+    } // --> str2 is valid till here 
     // lifetime of str2 is over after the block (out of scope)
     // then if the str2 is longestest then using 'ans' here will be a dangling pointer
-    // println!("{}", ans);
+    // println!("{}", ans); // --> str2 is not valid here anymore
 }
 
 // Lifetimes Inference is done by following rules.

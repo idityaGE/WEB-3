@@ -7,7 +7,7 @@ fn main() {
     // TODO: Noting to do
 
     let vv = vec![1, 2, 3, 4, 5];
-    println!("vv : {:?}", vv);
+    println!("vv : {:#?}", vv);
     let mut v1: Vec<i32> = Vec::new();
     v1.push(1);
     v1.push(2);
@@ -50,6 +50,7 @@ fn main() {
     let s1 = String::from("Hello ");
     let s2 = String::from("World");
     let s3 = s1 + &s2;
+    // println!("s1: {}", s1); // s1 is moved to s3 and can no longer be used
     println!("{} {}", s2, s3);
 
     // we can't access the char by index
@@ -68,7 +69,7 @@ fn main() {
         print!("{c} "); // न म स  ् त  े 
     }
     println!();
-    // ther is one more way whuch is Grapheme Cluster [न म स् ते]
+    // there is one more way which is `Grapheme Cluster` to print like this => [न म स् ते]
     // for this you need to add crate named => unicode-segmentation
 
     // #===================== String =====================#

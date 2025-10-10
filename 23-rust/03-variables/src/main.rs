@@ -4,6 +4,7 @@ use std::{f32::consts::PI, fs, ops::Mul};
 use dotenv::dotenv;
 use std::env;
 
+// Global Variables
 const _THREE_HOURS_IN_SECONDS: u32 = 60 * 60 * 3;
 
 struct Reactangle<T> {

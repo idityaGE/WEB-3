@@ -26,7 +26,7 @@ async fn main() {
     //! do_something();
 
     // we have to add the await, but await can only be used in async fn
-    // and async cannot be applied to the 'main' fn
+    // and async cannot be applied to the 'main' fn without `tokio`
     //* do_something().await;
 
     // we can store the returned Future in a variable and called await later

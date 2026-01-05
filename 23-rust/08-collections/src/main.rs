@@ -7,6 +7,7 @@ fn main() {
     // TODO: Noting to do
 
     let vv = vec![1, 2, 3, 4, 5];
+    let vvv = &vv[1..];
     println!("vv : {:#?}", vv);
     let mut v1: Vec<i32> = Vec::new();
     v1.push(1);
